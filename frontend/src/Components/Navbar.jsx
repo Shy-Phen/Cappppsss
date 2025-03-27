@@ -1,4 +1,4 @@
-import { UserRound } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useAuthStore } from "../store/authStore";
 import { useState } from "react";
 
@@ -28,10 +28,10 @@ const Navbar = () => {
               className="flex items-center gap-2 hover:opacity-80 absolute right-4 transition-all"
             >
               <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                <UserRound className="size-5 text-primary" />
+                <LogOut className="size-5 text-primary" />
               </div>
               <h1 className="hidden sm:block text-lg font-bold text-primary">
-                Profile
+                Logout
               </h1>
             </button>
           </div>

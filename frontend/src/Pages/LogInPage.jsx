@@ -23,7 +23,7 @@ const LogInPage = () => {
     <div className="w-full h-screen flex items-center justify-center bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden">
       <div className="bg-gray-900 lg:w-80 lg:h-[500px] sm:w-48 sm:h-52 md:h-[500px] md:w-96 rounded-lg border border-white p-6">
         <h2 className="text-center myfont text-white text-2xl mb-4">
-          Redefense Club
+          Evalllll
         </h2>
         <form className="flex flex-col " onSubmit={handleLogIn}>
           <Input
@@ -64,9 +64,9 @@ const LogInPage = () => {
           </button>
         </form>
         <p className="text-center">
-          have no account?{" "}
+          Don t have an account?{" "}
           <Link to="/signup" className="link link-primary">
-            Sign
+            Sign Up
           </Link>
         </p>
       </div>

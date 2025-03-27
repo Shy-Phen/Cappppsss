@@ -15,7 +15,7 @@ const EvaluatedCard = ({ evalu }) => {
     <div className="rounded-lg p-6 bg-slate-900 shadow-lg hover:shadow-xl transition-shadow duration-300 hover:scale-105 transform">
       {/* Group Name */}
       <h2 className="text-lg font-semibold text-white mb-2">
-        Group name: <span className="text-blue-300">{evalu.title}</span>
+        Group/Project name: <span className="text-blue-300">{evalu.title}</span>
       </h2>
 
       {/* Member */}

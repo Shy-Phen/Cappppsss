@@ -166,8 +166,8 @@ export const evaluateStore = create((set, get) => ({
     set({ loading: true });
     try {
       const res = await axiosInstance.get(`/evaluate/${id}`);
-      console.log("Fetched eval:", res.data);
-      set({ currentEval: res.data });
+      console.log("Fetched eval:", res.data.data);
+      set({ currentEval: res.data.data });
     } catch (error) {
       console.log("Error in getting eval", error);
     } finally {

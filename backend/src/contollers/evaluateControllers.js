@@ -74,7 +74,9 @@ export const getAllEvaluation = async (req, res) => {
   try {
     const user = req.userId;
 
-    const evaluated = await Evaluate.find({ createdBy: user });
+    const evaluated = await Evaluate.find({ createdBy: user }).sort({
+      createdAt: -1,
+    });
     if (!evaluated) return res.status(404).json({ message: "No evaluation" });
 
     res.status(200).json(evaluated);
@@ -88,24 +90,38 @@ export const getOneEvaluation = async (req, res) => {
     const { id } = req.params;
     const user = req.userId;
 
-    const evaluated = await Evaluate.findById(id);
+    const evaluated = await Evaluate.findById(id).populate({
+      path: "assessmentFramework",
+      select: "scoringScale title", // Added 'title' as it's commonly needed
+    });
 
-    if (!evaluated)
-      return res
-        .status(404)
-        .json({ success: false, message: "Evalution not found" });
+    if (!evaluated) {
+      return res.status(404).json({
+        success: false,
+        message: "Evaluation not found", // Fixed typo in "Evaluation"
+      });
+    }
 
-    if (user != evaluated.createdBy.toString())
-      return res
-        .status(401)
-        .json({ success: false, message: " Unauthorized u r not the user" });
+    if (user.toString() !== evaluated.createdBy.toString()) {
+      // Better comparison
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized - you are not the creator", // More professional message
+      });
+    }
 
-    res.status(200).json(evaluated);
+    res.status(200).json({
+      success: true,
+      data: evaluated, // Standard to wrap in 'data' property
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      error: process.env.NODE_ENV === "development" ? error.stack : undefined, // Helpful for debugging
+    });
   }
 };
-
 export const updateEvaluation = async (req, res) => {
   try {
     const { id } = req.params;

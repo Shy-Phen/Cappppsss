@@ -12,7 +12,6 @@ const ViewPage = () => {
   const handleDownload = () => {
     const node = componentRef.current;
 
-    // Options to ensure no cropping and proper scaling
     const options = {
       quality: 1, // Highest quality
       width: node.clientWidth, // Explicitly set width
@@ -55,7 +54,7 @@ const ViewPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-gray-500">
-                  Project Title / Group Name
+                  Project name / Group Name
                 </p>
                 <p className="text-lg font-semibold text-gray-800 mt-1">
                   {currentEval?.title}
@@ -70,9 +69,7 @@ const ViewPage = () => {
             </div>
           </div>
 
-          <h1 className="text-lg pl-5 text-black">
-            {currentEval?.member.length === 1 ? "Member" : "Members"}
-          </h1>
+          <h1 className="text-lg pl-5 text-black"> Members</h1>
           <div className="grid grid-cols-2 items-center gap-2 m-4 mb-8">
             {currentEval?.member?.map((mem, index) => (
               <div
@@ -82,6 +79,24 @@ const ViewPage = () => {
                 <h1 className="text-black">{mem}</h1>
               </div>
             ))}
+          </div>
+
+          <div className="flex justify-center my-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 items-center  border-2 border-black rounded pr-8 gap-4">
+              {currentEval?.assessmentFramework?.scoringScale?.map(
+                (scoreScale) => (
+                  <div
+                    key={scoreScale._id || scoreScale.score}
+                    className="flex items-center justify-center rounded"
+                  >
+                    <h1 className="text-black">
+                      <span className="">{scoreScale.score}</span> -{" "}
+                      {scoreScale.description}
+                    </h1>
+                  </div>
+                )
+              )}
+            </div>
           </div>
 
           <div className="mb-6">
@@ -125,7 +140,7 @@ const ViewPage = () => {
       {/* Action Buttons (outside the captured content) */}
       <div className="flex justify-end mt-8 max-w-5xl mx-auto">
         <button className="btn btn-primary mr-2" onClick={handleDownload}>
-          Download PDF
+          Download Report
         </button>
         <button className="btn btn-primary" onClick={() => navigate("/")}>
           <HomeIcon size={18} />

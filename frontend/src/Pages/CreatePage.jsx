@@ -84,7 +84,7 @@ const CreatePage = () => {
       validationErrors.push("All team members must have a name");
     }
     if (!evalFormData.assessmentFramework) {
-      validationErrors.push("Select an asssessment framework");
+      validationErrors.push("Select Rubric");
     }
     if (evalFormData.criteriaAndScore.some((item) => item.score === 0)) {
       validationErrors.push("Score all criteria before submitting");
