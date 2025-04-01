@@ -10,7 +10,6 @@ export const statsStore = create((set) => ({
 
   fetchStats: async () => {
     set({ loading: true });
-
     try {
       const res = await axiosInstance.get("/stats");
       set({ stats: res.data });

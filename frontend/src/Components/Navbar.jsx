@@ -1,10 +1,12 @@
-import { LogOut } from "lucide-react";
+import { LogOut, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { useState } from "react";
 
 const Navbar = () => {
   const { authUser } = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const toggleDropdown = () => {
     setIsOpen((prevState) => !prevState);
   };
@@ -21,7 +23,11 @@ const Navbar = () => {
           <div className="flex items-center gap-8">
             <h1 className="text-lg font-bold text-primary">Evalllll</h1>
           </div>
-
+          <div className="fixed gap-4 right-16 sm:right-0 md:right-36">
+            <button onClick={() => navigate("/search")} className="">
+              <Search />
+            </button>
+          </div>
           <div className="flex items-center gap-6">
             <button
               onClick={toggleDropdown}

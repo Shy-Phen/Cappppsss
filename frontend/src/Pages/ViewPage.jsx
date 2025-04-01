@@ -1,11 +1,17 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import domtoimage from "dom-to-image";
 import { HomeIcon } from "lucide-react";
 import { evaluateStore } from "../store/evaluateStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ViewPage = () => {
-  const { currentEval } = evaluateStore();
+  const { id } = useParams();
+  const { currentEval, getOneEvaluation } = evaluateStore();
+
+  useEffect(() => {
+    if (id) getOneEvaluation(id);
+  }, [id]);
+
   const navigate = useNavigate();
   const componentRef = useRef(null); // Ref for the content to capture
 

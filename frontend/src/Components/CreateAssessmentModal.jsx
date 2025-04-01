@@ -6,32 +6,21 @@ const CreateAssessmentModal = () => {
   const { createAssessment, isCreating } = assessmentFrameworkStore();
   const [criteriaFields, setCriteriaFields] = useState([{ criteria: "" }]);
 
-  // Handle adding a new criteria field
   const handleAddCriteria = () => {
     setCriteriaFields([...criteriaFields, { criteria: "" }]);
   };
 
-  // Handle removing a criteria field
   const handleDeleteCriteria = (index) => {
     setCriteriaFields((prevFields) => prevFields.filter((_, i) => i !== index));
   };
 
-  // Handle updating criteria input
   const handleChangee = (index, event) => {
     const updatedFields = [...criteriaFields];
     updatedFields[index].criteria = event.target.value;
     setCriteriaFields(updatedFields);
   };
 
-  const [page, setPage] = useState({ F: true });
-
-  const handlePageFalse = () => {
-    setPage((prev) => ({ ...prev, F: false }));
-  };
-
-  const handlePageTrue = () => {
-    setPage((prev) => ({ ...prev, F: true }));
-  };
+  const [page, setPage] = useState(true);
 
   const [fields, setFields] = useState([{ score: "", description: "" }]);
 
@@ -97,7 +86,7 @@ const CreateAssessmentModal = () => {
           onSubmit={handleSubmit}
           className="space-y-4 mt-5 grid place-items-center"
         >
-          {page.F ? (
+          {page ? (
             <>
               <h3 className="flex justify-center font-bold text-lg">
                 Create Rubric
@@ -124,7 +113,7 @@ const CreateAssessmentModal = () => {
                     className="btn btn-sm btn-primary"
                     onClick={handleFields}
                   >
-                    <PlusSquare className="" />
+                    <PlusSquare />
                   </button>
                 </div>
               </div>
@@ -174,19 +163,16 @@ const CreateAssessmentModal = () => {
             </>
           ) : (
             <div className="w-full p-4">
-              {/* Add Button */}
               <div className="flex justify-center items-center size-8 absolute right-5 bg-cyan-600 rounded ">
                 <h1 onClick={handleAddCriteria}>
                   <SquarePlus />
                 </h1>
               </div>
 
-              {/* Criteria Fields */}
               <h3 className="text-lg font-semibold mb-2">Set Criteria</h3>
               <div className="grid grid-cols-1 gap-4">
                 {criteriaFields.map((field, index) => (
                   <div key={index} className="flex items-start gap-2 w-full">
-                    {/* Input Field */}
                     <label className="form-control flex-1">
                       <div className="label">
                         <span className="label-text">Criteria</span>
@@ -199,7 +185,6 @@ const CreateAssessmentModal = () => {
                       />
                     </label>
 
-                    {/* Delete Button */}
                     {criteriaFields.length > 1 && (
                       <button
                         type="button"
@@ -257,14 +242,14 @@ const CreateAssessmentModal = () => {
               name="options"
               aria-label="1"
               defaultChecked
-              onClick={handlePageTrue}
+              onClick={() => setPage(true)}
             />
             <input
               className="join-item btn btn-square"
               type="radio"
               name="options"
               aria-label="2"
-              onClick={handlePageFalse}
+              onClick={() => setPage(false)}
             />
           </div>
         </div>

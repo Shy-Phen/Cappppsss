@@ -63,6 +63,7 @@ export const assessmentFrameworkStore = create((set, get) => ({
 
   getOneAssessment: async (id) => {
     set({ loading: true });
+    console.log(`Your current Id ${id}`);
     try {
       const res = await axiosInstance.get(`/assessment-framework/${id}`);
       console.log("Fetched assessment:", res.data.assessmentFramework);

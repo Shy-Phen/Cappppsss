@@ -4,6 +4,7 @@ import SignUpPage from "./Pages/SignUpPage";
 import LogInPage from "./Pages/LogInPage";
 import HomePage from "./Pages/HomePage";
 import CreatePage from "./Pages/CreatePage";
+import Search from "./Pages/Search";
 import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
@@ -61,8 +62,12 @@ const App = () => {
           element={authUser ? <CreatePage /> : <Navigate to={"/login"} />}
         />
         <Route
-          path="/view"
+          path="/view/:id"
           element={authUser ? <ViewPage /> : <Navigate to={"/login"} />}
+        />
+        <Route
+          path="/search"
+          element={authUser ? <Search /> : <Navigate to={"/login"} />}
         />
       </Routes>
       <Toaster position="bottom-right" />

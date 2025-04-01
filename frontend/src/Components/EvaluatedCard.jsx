@@ -3,12 +3,11 @@ import { evaluateStore } from "../store/evaluateStore";
 import { useNavigate } from "react-router-dom";
 
 const EvaluatedCard = ({ evalu }) => {
-  const { deleteEvaluation, getOneEvaluation } = evaluateStore();
+  const { deleteEvaluation } = evaluateStore();
   const navigate = useNavigate();
 
   const handleView = async (id) => {
-    await getOneEvaluation(id);
-    navigate("/view");
+    navigate(`/view/${id}`);
   };
 
   return (

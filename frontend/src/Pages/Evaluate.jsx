@@ -8,16 +8,14 @@ const Evaluate = () => {
   const { evaluated, loading, getAllEvaluated } = evaluateStore();
   const navigate = useNavigate();
 
-  // Fetch evaluations on component mount
   useEffect(() => {
     getAllEvaluated();
-  }, [getAllEvaluated]); // Re-add getAllEvaluated to dependencies if it's stable
+  }, [getAllEvaluated]);
 
   const handleNavigate = () => {
     navigate("/create");
   };
 
-  // Render loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -37,14 +35,12 @@ const Evaluate = () => {
 
   return (
     <div className="ml-10 lg:ml-64 mt-14 h-screen overflow-auto bg-base-200">
-      {/* Empty state */}
       {evaluated.length === 0 && (
         <div className="flex justify-center items-center h-full w-full">
           <h1 className="text-white text-4xl">No evaluation found</h1>
         </div>
       )}
 
-      {/* Grid of evaluations */}
       {evaluated.length > 0 && (
         <div className="flex-1 overflow-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 m-8 gap-4">
@@ -55,7 +51,6 @@ const Evaluate = () => {
         </div>
       )}
 
-      {/* Floating action button */}
       <div className="fixed right-5 bottom-5">
         <button
           className="flex justify-center items-center w-12 h-12 rounded-full bg-black hover:bg-white transition-colors"
