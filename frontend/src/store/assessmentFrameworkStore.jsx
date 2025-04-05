@@ -21,7 +21,7 @@ export const assessmentFrameworkStore = create((set, get) => ({
       set({ isCreating: true });
       await axiosInstance.post("/assessment-framework", data);
       get().getAllAssessmentFramework();
-      document.getElementById("my_modal_1").close();
+
       toast.success("Rubric Created");
     } catch (error) {
       toast.error(error);

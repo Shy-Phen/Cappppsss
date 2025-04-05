@@ -10,18 +10,18 @@ const ViewPage = () => {
 
   useEffect(() => {
     if (id) getOneEvaluation(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const navigate = useNavigate();
-  const componentRef = useRef(null); // Ref for the content to capture
-
+  const componentRef = useRef(null);
   const handleDownload = () => {
     const node = componentRef.current;
 
     const options = {
-      quality: 1, // Highest quality
-      width: node.clientWidth, // Explicitly set width
-      height: node.clientHeight, // Explicitly set height
+      quality: 1,
+      width: node.clientWidth,
+      height: node.clientHeight,
       style: {
         margin: "0",
         padding: "0",
@@ -43,7 +43,6 @@ const ViewPage = () => {
 
   return (
     <div className="ml-4 sm:ml-10 lg:ml-64 mt-14 p-4 min-h-screen bg-base-200">
-      {/* Content to capture (excludes the button) */}
       <div
         className="max-w-5xl mx-auto bg-white rounded-lg shadow-md my-6"
         ref={componentRef}
@@ -113,6 +112,7 @@ const ViewPage = () => {
                     <th className="bg-gray-700 text-white py-3 px-4 text-left rounded-tl-lg">
                       Criteria
                     </th>
+
                     <th className="bg-gray-700 text-white py-3 px-4 text-center rounded-tr-lg w-32">
                       Score
                     </th>
@@ -143,7 +143,6 @@ const ViewPage = () => {
         </div>
       </div>
 
-      {/* Action Buttons (outside the captured content) */}
       <div className="flex justify-end mt-8 max-w-5xl mx-auto">
         <button className="btn btn-primary mr-2" onClick={handleDownload}>
           Download Report

@@ -1,15 +1,19 @@
-import { Pencil, Trash2Icon } from "lucide-react";
+import { Eye, Pencil, Trash2Icon } from "lucide-react";
 import { assessmentFrameworkStore } from "../store/assessmentFrameworkStore";
-import ViewAndEditCard from "./ViewAndEditCard";
 
 const AssessmentCard = ({ assessment }) => {
   const { deleteAssessment, getOneAssessment } = assessmentFrameworkStore();
 
-  const handleView = (id) => {
-    console.log("🖱️ Clicked Assessment ID:", id); // Debugging clicked ID
-    document.getElementById("my_modal_3").showModal();
+  const handleEdit = (id) => {
+    console.log("🖱️ Clicked Assessment ID:", id);
+
     getOneAssessment(id);
-    <ViewAndEditCard />;
+    document.getElementById("my_modal_3").showModal();
+  };
+
+  const handleView = (id) => {
+    getOneAssessment(id);
+    document.getElementById("viewModal").showModal();
   };
   return (
     <div className=" bg-base-100 rounded h-20  shadow-lg relative">
@@ -21,11 +25,11 @@ const AssessmentCard = ({ assessment }) => {
           {new Date(assessment.createdAt).toLocaleDateString()}
         </h6>
       </div>
-      <div className="absolute grid grid-cols-2 bottom-2 right-5 gap-2">
+      <div className="absolute grid grid-cols-3 bottom-2 right-5 gap-2">
         <button
           className="flex justify-center items-center bg-blue-400 rounded size-5"
           onClick={() => {
-            handleView(assessment._id);
+            handleEdit(assessment._id);
           }}
         >
           <Pencil className="size-4" />
@@ -38,6 +42,14 @@ const AssessmentCard = ({ assessment }) => {
           }}
         >
           <Trash2Icon className="size-4" />
+        </button>
+        <button
+          className="flex justify-center items-center bg-blue-500 rounded size-5 "
+          onClick={() => {
+            handleView(assessment._id);
+          }}
+        >
+          <Eye className="size-4" />
         </button>
       </div>
     </div>

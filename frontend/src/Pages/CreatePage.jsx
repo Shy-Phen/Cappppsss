@@ -262,7 +262,7 @@ const CreatePage = () => {
                   <Undo2 /> Back
                 </button>
                 <button
-                  className="btn bg-primary btn-md text-black"
+                  className="btn bg-primary btn-md text-black hover:bg-neutral"
                   onClick={handleToggle}
                   type="button"
                   disabled={
@@ -277,7 +277,7 @@ const CreatePage = () => {
             ) : (
               <>
                 <button
-                  className="btn bg-primary btn-md text-black"
+                  className="btn bg-primary btn-md text-black hover:bg-neutral"
                   onClick={handleToggle}
                   type="button"
                 >
@@ -285,7 +285,7 @@ const CreatePage = () => {
                 </button>
                 <button
                   type="submit"
-                  className="btn bg-primary btn-md text-black"
+                  className="btn bg-primary btn-md text-black hover:bg-neutral"
                   disabled={evalFormData.criteriaAndScore.some(
                     (item) => item.score === 0
                   )}

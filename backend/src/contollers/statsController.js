@@ -5,7 +5,6 @@ export const getStats = async (req, res) => {
   try {
     const user = req.userId;
 
-    // Count all evaluations created by this user
     const totalEvaluations = await Evaluate.countDocuments({ createdBy: user });
     const totalRubrics = await AssessmentFramework.countDocuments({
       createdBy: user,
@@ -16,7 +15,39 @@ export const getStats = async (req, res) => {
       totalRubrics,
     });
   } catch (error) {
-    console.error(error); // Log the error for debugging
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getEval = async (req, res) => {
+  try {
+    const user = req.userId;
+
+    const evaluate = await Evaluate.find({ createdBy: user })
+      .sort({ createdAt: -1 })
+      .limit(2)
+      .select("title createdAt ");
+
+    res.status(201).json({ evaluate });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getRub = async (req, res) => {
+  try {
+    const user = req.userId;
+
+    const rub = await AssessmentFramework.find({ createdBy: user })
+      .sort({ createdAt: -1 })
+      .limit(2)
+      .select("title createdAt");
+
+    res.status(201).json({ rub });
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

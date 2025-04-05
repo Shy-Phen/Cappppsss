@@ -1,5 +1,6 @@
 import { assessmentFrameworkStore } from "../store/assessmentFrameworkStore";
 import { EyeIcon } from "lucide-react";
+
 const SearchRubricCard = ({ rubricData }) => {
   const { getOneAssessment, currentAssessment } = assessmentFrameworkStore();
 
@@ -11,54 +12,41 @@ const SearchRubricCard = ({ rubricData }) => {
   return (
     <div className="rounded-lg p-6 bg-slate-900 shadow-lg hover:shadow-xl h-40 w-full flex flex-col justify-between">
       <dialog id="viewRubric" className="modal">
-        <div className="modal-box">
+        <div className="modal-box max-w-5xl">
           <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
             </button>
           </form>
           <h3 className="font-bold text-lg">{currentAssessment?.title}</h3>
 
-          <table className="w-full border-separate border-spacing-0 rounded-lg border border-gray-300 overflow-hidden mt-8">
-            <thead>
-              <tr className="bg-gray-950">
-                <th className="p-2 border-b border-r border-gray-300 text-left">
-                  Level
-                </th>
-                <th className="p-2 border-b border-gray-300 text-left">
-                  Score
-                </th>
+          <table className="w-full border-collapse rounded-lg mt-8">
+            <thead className="border bg-black ">
+              <tr>
+                <th className="border-r">Criteria</th>
+                {currentAssessment?.scoringScale?.map((level) => (
+                  <th key={level._id} className="text-sm border-r">
+                    {level.score} - {level.description}
+                  </th>
+                ))}
               </tr>
             </thead>
-            <tbody>
-              {currentAssessment?.scoringScale?.map((CNS) => (
-                <tr key={CNS._id} className="hover:bg-black">
-                  <td className="p-1 border-b border-r border-gray-300 text-left">
-                    {CNS.description}
-                  </td>
-                  <td className="p-1 border-b border-gray-300 text-left">
-                    {CNS.score}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <table className="w-full border-separate border-spacing-0 rounded-lg border border-gray-300 overflow-hidden mt-8">
-            <thead>
-              <tr className="bg-gray-950">
-                <th className="p-2 border-b border-r border-gray-300 text-center">
-                  Performance Criteria
-                </th>
-              </tr>
-            </thead>
-            <tbody>
+            <tbody className="border border-black">
               {currentAssessment?.criteria?.map((cri) => (
-                <tr key={cri._id} className="hover:bg-black">
-                  <td className="p-1 border-b border-gray-300 text-left">
+                <tr key={cri._id} className="border">
+                  <td className="text-sm font-semibold border">
                     {cri.criteria}
                   </td>
+
+                  {cri.descriptor.map((index) => (
+                    <td
+                      key={`${cri._id}-${index}`}
+                      className="text-xs border text-left p-2"
+                    >
+                      {" "}
+                      {index}.
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>

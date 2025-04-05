@@ -31,7 +31,6 @@ export const createEvaluation = async (req, res) => {
         .json({ success: false, message: "Assessment framework not found" });
     }
 
-    // Validate criteria scores against scoring scale
     const validScores = assF.scoringScale.map((scale) => scale.score);
 
     const isValid = criteriaAndScore.every((item) =>
@@ -92,13 +91,13 @@ export const getOneEvaluation = async (req, res) => {
 
     const evaluated = await Evaluate.findById(id).populate({
       path: "assessmentFramework",
-      select: "scoringScale title", // Added 'title' as it's commonly needed
+      select: "scoringScale title criteria",
     });
 
     if (!evaluated) {
       return res.status(404).json({
         success: false,
-        message: "Evaluation not found", // Fixed typo in "Evaluation"
+        message: "Evaluation not found",
       });
     }
 
@@ -106,19 +105,19 @@ export const getOneEvaluation = async (req, res) => {
       // Better comparison
       return res.status(401).json({
         success: false,
-        message: "Unauthorized - you are not the creator", // More professional message
+        message: "Unauthorized - you are not the creator",
       });
     }
 
     res.status(200).json({
       success: true,
-      data: evaluated, // Standard to wrap in 'data' property
+      data: evaluated,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: error.message,
-      error: process.env.NODE_ENV === "development" ? error.stack : undefined, // Helpful for debugging
+      error: process.env.NODE_ENV === "development" ? error.stack : undefined,
     });
   }
 };
@@ -158,7 +157,6 @@ export const deleteEvaluation = async (req, res) => {
         .json({ success: false, message: "Evaluation not found" });
     }
 
-    // Check if the logged-in user is the owner
     if (user !== evaluated.createdBy.toString()) {
       return res.status(403).json({
         success: false,
@@ -166,7 +164,6 @@ export const deleteEvaluation = async (req, res) => {
       });
     }
 
-    // Now, safely delete the evaluation
     await Evaluate.findByIdAndDelete(id);
 
     res.status(200).json({ success: true, message: "Deleted successfully" });

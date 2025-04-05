@@ -14,6 +14,7 @@ import AssessmentFramework from "./Pages/AssessmentFramework";
 import Evaluate from "./Pages/Evaluate";
 import SideBar from "./Components/SideBar";
 import ViewPage from "./Pages/ViewPage";
+import CreateRub from "./Pages/CreateRub";
 
 const App = () => {
   const { isCheckingAuth, authUser, checkAuth } = useAuthStore();
@@ -56,6 +57,10 @@ const App = () => {
         <Route
           path="/evaluate"
           element={authUser ? <Evaluate /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/createrubric"
+          element={authUser ? <CreateRub /> : <Navigate to={"/login"} />}
         />
         <Route
           path="/create"

@@ -5,6 +5,7 @@ import authRoutes from "./routes/authRoute.js";
 import assessmentFramework from "./routes/assessmentFrameworkRoutes.js";
 import search from "./routes/searchRoute.js";
 import stats from "./routes/statsRoutes.js";
+import downloadRep from "./routes/downloadReport.js";
 import evaluate from "./routes/evaluateRoutes.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -29,7 +30,7 @@ app.use("/api/assessment-framework", assessmentFramework);
 app.use("/api/evaluate", evaluate);
 app.use("/api/stats", stats);
 app.use("/api/search", search);
-
+app.use("/api/downloadReport", downloadRep);
 app.listen(PORT, () => {
   console.log("connected to PORT: " + PORT);
   connectDB();

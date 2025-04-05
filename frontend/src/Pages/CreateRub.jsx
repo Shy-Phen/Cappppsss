@@ -1,13 +1,59 @@
 import { PlusSquare, SquarePlus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { assessmentFrameworkStore } from "../store/assessmentFrameworkStore";
+import { useNavigate } from "react-router-dom";
 
-const CreateAssessmentModal = () => {
+const CreateRub = () => {
+  const navigate = useNavigate();
+
   const { createAssessment, isCreating } = assessmentFrameworkStore();
-  const [criteriaFields, setCriteriaFields] = useState([{ criteria: "" }]);
+
+  // State for criteria fields with descriptors
+  const [criteriaFields, setCriteriaFields] = useState([
+    { criteria: "", descriptor: [] },
+  ]);
+
+  // State for scoring scale
+  const [fields, setFields] = useState([{ score: "", description: "" }]);
+
+  // Title state
+  const [Title, setTitle] = useState({ title: "" });
+
+  // Active tab state
+  const [activeTab, setActiveTab] = useState("1");
+
+  // Update descriptors when criteria or scoring scale changes
+  useEffect(() => {
+    // Create updated criteria fields with correct number of descriptors
+    const updatedCriteriaFields = criteriaFields.map((criteriaItem) => {
+      // Ensure descriptor array is the same length as fields array
+      const descriptors = [...criteriaItem.descriptor];
+
+      // Add or remove descriptors to match fields length
+      while (descriptors.length < fields.length) {
+        descriptors.push("");
+      }
+      while (descriptors.length > fields.length) {
+        descriptors.pop();
+      }
+
+      return {
+        ...criteriaItem,
+        descriptor: descriptors,
+      };
+    });
+
+    setCriteriaFields(updatedCriteriaFields);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fields.length]);
 
   const handleAddCriteria = () => {
-    setCriteriaFields([...criteriaFields, { criteria: "" }]);
+    const emptyDescriptors = Array(fields.length).fill("");
+
+    setCriteriaFields([
+      ...criteriaFields,
+      { criteria: "", descriptor: emptyDescriptors },
+    ]);
   };
 
   const handleDeleteCriteria = (index) => {
@@ -20,11 +66,14 @@ const CreateAssessmentModal = () => {
     setCriteriaFields(updatedFields);
   };
 
-  const [page, setPage] = useState(true);
+  // Handle descriptor change
+  const handleDescriptorChange = (criteriaIndex, descriptorIndex, value) => {
+    const updatedFields = [...criteriaFields];
+    updatedFields[criteriaIndex].descriptor[descriptorIndex] = value;
+    setCriteriaFields(updatedFields);
+  };
 
-  const [fields, setFields] = useState([{ score: "", description: "" }]);
-
-  //add
+  //add scoring scale
   const handleFields = () => {
     setFields([...fields, { score: "", description: "" }]);
   };
@@ -39,6 +88,7 @@ const CreateAssessmentModal = () => {
     );
     setFields(updatedFields);
   };
+
   const isValid = fields.every(
     (field) => field.score.trim() !== "" && field.description.trim() !== ""
   );
@@ -47,50 +97,77 @@ const CreateAssessmentModal = () => {
     (Criteria) => Criteria.criteria.trim() !== ""
   );
 
-  const [Title, setTitle] = useState({ title: "" });
+  // Check if all descriptors are filled
+  const isValidDescriptors = criteriaFields.every((criteria) =>
+    criteria.descriptor.every((desc) => desc.trim() !== "")
+  );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("handleSubmit called!");
 
-    const newData = {
-      title: Title.title,
-      scoringScale: fields,
-      criteria: criteriaFields,
-    };
+    try {
+      const newData = {
+        title: Title.title,
+        scoringScale: fields,
+        criteria: criteriaFields,
+      };
 
-    createAssessment(newData);
-    console.log(`NewData: ${JSON.stringify(newData, null, 2)}`);
+      console.log("Submitting data...", newData);
 
-    setTitle({ title: "" });
-    setFields([{ score: "", description: "" }]);
-    setCriteriaFields([{ criteria: "" }]);
+      // Await the completion of createAssessment
+      await createAssessment(newData);
+
+      console.log("Submission successful, navigating...");
+
+      // Delay navigation slightly to ensure state updates complete
+      setTimeout(() => {
+        navigate("/assessment-framework");
+      }, 100);
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert("Failed to create rubric. Please try again.");
+    }
   };
 
-  const closeModal = () => {
-    document.getElementById("my_modal_1").close();
+  const handleCancel = () => {
+    navigate("/assessment-framework");
   };
 
   return (
-    <dialog id="my_modal_1" className="modal">
-      <div className="modal-box">
-        {/* if there is a button in form, it will close the modal */}
-        <button
-          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={closeModal}
+    <div className="ml-10 lg:ml-64 mt-20">
+      <div className="grid place-items-center">
+        <h1 className="text-2xl font-bold mb-6">Create Rubric</h1>
+      </div>
+      <div className="flex justify-between mb-8">
+        <div
+          className={`w-1/3 text-center pb-2 ${
+            activeTab === "1" ? "border-b-2 border-blue-500" : ""
+          }`}
         >
-          ✕
-        </button>
-
+          Performance Level
+        </div>
+        <div
+          className={`w-1/3 text-center pb-2 ${
+            activeTab === "2" ? "border-b-2 border-blue-500" : ""
+          }`}
+        >
+          Criteria
+        </div>
+        <div
+          className={`w-1/3 text-center pb-2 ${
+            activeTab === "3" ? "border-b-2 border-blue-500" : ""
+          }`}
+        >
+          Descriptors
+        </div>
+      </div>
+      <div className="mt-8">
         <form
           onSubmit={handleSubmit}
           className="space-y-4 mt-5 grid place-items-center"
         >
-          {page ? (
+          {activeTab === "1" && (
             <>
-              <h3 className="flex justify-center font-bold text-lg">
-                Create Rubric
-              </h3>
               <label className="w-full max-w-xs">
                 <div className="label">
                   <span className="label-text">Rubric title</span>
@@ -161,7 +238,8 @@ const CreateAssessmentModal = () => {
                 </div>
               ))}
             </>
-          ) : (
+          )}
+          {activeTab === "2" && (
             <div className="w-full p-4">
               <div className="flex justify-center items-center size-8 absolute right-5 bg-cyan-600 rounded ">
                 <h1 onClick={handleAddCriteria}>
@@ -197,17 +275,62 @@ const CreateAssessmentModal = () => {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+          {activeTab === "3" && (
+            <div className="w-full p-4">
+              <h3 className="text-lg font-semibold mb-4">Set Descriptors</h3>
+
+              {criteriaFields.map((criteria, criteriaIndex) => (
+                <div
+                  key={criteriaIndex}
+                  className="mb-6 bg-black p-3 rounded-lg"
+                >
+                  <h4 className="font-medium mb-2">
+                    {criteria.criteria || `Criteria ${criteriaIndex + 1}`}
+                  </h4>
+
+                  <div className="grid grid-cols-1 gap-3">
+                    {fields.map((scoreItem, scoreIndex) => (
+                      <div key={scoreIndex} className=" p-2 rounded">
+                        <div className="flex items-center mb-1">
+                          <span className="text-xs font-medium mr-2">
+                            Scale/Perforamnce level: {scoreItem.score} -
+                          </span>
+                          <span className="text-xs text-white">
+                            {scoreItem.description}
+                          </span>
+                        </div>
+                        <textarea
+                          className="textarea textarea-bordered w-full p-2"
+                          placeholder={`Descriptor for this score level`}
+                          value={criteria.descriptor[scoreIndex] || ""}
+                          onChange={(e) =>
+                            handleDescriptorChange(
+                              criteriaIndex,
+                              scoreIndex,
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
               <div className="flex grid-cols-2 justify-center m-10 mb-5 gap-4">
                 <div>
                   <button
-                    className="w-20 h-10 rounded btn-active btn-primary"
+                    className="btn bg-primary btn-md text-black"
                     disabled={
                       isCreating ||
                       !Title.title ||
                       !criteriaFields ||
                       !fields ||
                       !isValid ||
-                      !isValidCriteria
+                      !isValidCriteria ||
+                      !isValidDescriptors
                     }
                     type="submit"
                   >
@@ -223,7 +346,7 @@ const CreateAssessmentModal = () => {
                 <div>
                   <button
                     className="w-20 h-10 rounded btn-neutral"
-                    onClick={closeModal}
+                    onClick={handleCancel}
                     type="button"
                   >
                     Cancel
@@ -235,27 +358,30 @@ const CreateAssessmentModal = () => {
         </form>
 
         <div className="mt-5 flex justify-center">
-          <div className="flex justify-end">
-            <input
-              className="join-item btn btn-square"
-              type="radio"
-              name="options"
-              aria-label="1"
-              defaultChecked
-              onClick={() => setPage(true)}
-            />
-            <input
-              className="join-item btn btn-square"
-              type="radio"
-              name="options"
-              aria-label="2"
-              onClick={() => setPage(false)}
-            />
+          <div className="join">
+            <button
+              className={`join-item btn ${activeTab === "1" && "btn-active"} `}
+              onClick={() => setActiveTab("1")}
+            >
+              1
+            </button>
+            <button
+              className={`join-item btn ${activeTab === "2" && "btn-active"} `}
+              onClick={() => setActiveTab("2")}
+            >
+              2
+            </button>
+            <button
+              className={`join-item btn ${activeTab === "3" && "btn-active"} `}
+              onClick={() => setActiveTab("3")}
+            >
+              3
+            </button>
           </div>
         </div>
       </div>
-    </dialog>
+    </div>
   );
 };
 
-export default CreateAssessmentModal;
+export default CreateRub;
