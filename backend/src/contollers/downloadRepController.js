@@ -46,6 +46,11 @@ export const downloadReport = async (req, res) => {
     doc.fontSize(18).text(rubric.title, { align: "center" });
     doc.moveDown(0.5);
 
+    doc
+      .fontSize(16)
+      .text(`Possible Points: ${rubric.total}`, { align: "left" });
+    doc.moveDown(0.5);
+
     // Table configuration
     const tableTop = doc.y;
     const tableLeft = 30;

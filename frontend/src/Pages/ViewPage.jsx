@@ -74,7 +74,7 @@ const ViewPage = () => {
             </div>
           </div>
 
-          <h1 className="text-lg pl-5 text-black"> Members</h1>
+          <h1 className="text-lg pl-5 text-black"> Names</h1>
           <div className="grid grid-cols-2 items-center gap-2 m-4 mb-8">
             {currentEval?.member?.map((mem, index) => (
               <div
@@ -87,7 +87,7 @@ const ViewPage = () => {
           </div>
 
           <div className="flex justify-center my-4">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 items-center  border-2 border-black rounded pr-8 gap-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 items-center  border-2 border-black rounded px-2 gap-4 ">
               {currentEval?.assessmentFramework?.scoringScale?.map(
                 (scoreScale) => (
                   <div
@@ -138,7 +138,8 @@ const ViewPage = () => {
           </div>
 
           <h1 className="text-xl text-black">
-            Total Score: {currentEval?.criteriaTotalScore}
+            Total Score: {currentEval?.criteriaTotalScore}{" "}
+            {` / ${currentEval?.assessmentFramework?.total}`}
           </h1>
         </div>
       </div>

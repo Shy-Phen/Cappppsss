@@ -30,6 +30,11 @@ const assessmentFramweworkSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    total: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

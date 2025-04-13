@@ -91,7 +91,7 @@ export const getOneEvaluation = async (req, res) => {
 
     const evaluated = await Evaluate.findById(id).populate({
       path: "assessmentFramework",
-      select: "scoringScale title criteria",
+      select: "scoringScale title criteria total",
     });
 
     if (!evaluated) {

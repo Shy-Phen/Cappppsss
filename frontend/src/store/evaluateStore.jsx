@@ -69,30 +69,15 @@ export const evaluateStore = create((set, get) => ({
     try {
       const { evalFormData } = get();
 
-      // Calculate total score
       const criteriaTotalScore = evalFormData.criteriaAndScore.reduce(
         (total, item) => total + item.score,
         0
       );
-
-      // Prepare payload
-      const payload = {
+      const data = {
         ...evalFormData,
         criteriaTotalScore,
-        member: evalFormData.member.filter((m) => m.trim() !== ""), // Remove empty members
       };
-
-      // Frontend validation
-      if (!payload.title.trim()) throw new Error("Title is required");
-      if (payload.member.length === 0)
-        throw new Error("At least one member is required");
-      if (!payload.assessmentFramework)
-        throw new Error("Select an assessment framework");
-      if (payload.criteriaAndScore.some((item) => item.score === 0)) {
-        throw new Error("Score all criteria before submitting");
-      }
-
-      await axiosInstance.post("/evaluate", payload);
+      await axiosInstance.post("/evaluate", data);
       toast.success("Evaluation created successfully");
       get().resetForm();
     } catch (error) {
@@ -117,7 +102,7 @@ export const evaluateStore = create((set, get) => ({
     }
   },
 
-  getOneAssessment: async (id) => {
+  getOneAssessmentt: async (id) => {
     set({ loading: true });
     try {
       const res = await axiosInstance.get(`/assessment-framework/${id}`);

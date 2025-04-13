@@ -1,8 +1,10 @@
 import { Eye, Pencil, Trash2Icon } from "lucide-react";
 import { assessmentFrameworkStore } from "../store/assessmentFrameworkStore";
+import { themeStore } from "../store/themesStore";
 
 const AssessmentCard = ({ assessment }) => {
   const { deleteAssessment, getOneAssessment } = assessmentFrameworkStore();
+  const { theme } = themeStore();
 
   const handleEdit = (id) => {
     console.log("🖱️ Clicked Assessment ID:", id);
@@ -16,9 +18,15 @@ const AssessmentCard = ({ assessment }) => {
     document.getElementById("viewModal").showModal();
   };
   return (
-    <div className=" bg-base-100 rounded h-20  shadow-lg relative">
+    <div
+      className={` ${
+        theme === "night" ? "bg-base-300" : "bg-primary text-primary-content"
+      } h-20 relative rounded-lg p-6  shadow-lg hover:shadow-xl transition-shadow duration-300 hover:scale-105 transform `}
+    >
       <div className="absolute left-5 top-2">
-        <h2 className="">Title: {assessment.title}</h2>
+        <h1 className="text-sm font-medium">
+          {assessment.title[0].toUpperCase() + assessment.title.slice(1)}
+        </h1>
       </div>
       <div className="absolute left-5 bottom-2">
         <h6 className="text-xs">

@@ -15,9 +15,11 @@ import Evaluate from "./Pages/Evaluate";
 import SideBar from "./Components/SideBar";
 import ViewPage from "./Pages/ViewPage";
 import CreateRub from "./Pages/CreateRub";
+import { themeStore } from "./store/themesStore";
 
 const App = () => {
   const { isCheckingAuth, authUser, checkAuth } = useAuthStore();
+  const { theme } = themeStore();
 
   useEffect(() => {
     checkAuth();
@@ -31,7 +33,7 @@ const App = () => {
     );
 
   return (
-    <div>
+    <div data-theme={theme}>
       <Navbar />
       <SideBar />
 

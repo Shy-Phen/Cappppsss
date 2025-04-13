@@ -11,7 +11,7 @@ const CreatePage = () => {
     createEvaluation,
     evalFormData,
     setEvalFormData,
-    getOneAssessment,
+    getOneAssessmentt,
     currentAssessmentt,
     updateCriteriaScore,
   } = evaluateStore();
@@ -60,7 +60,7 @@ const CreatePage = () => {
   };
 
   const handleSelectedAssessment = (id) => {
-    getOneAssessment(id);
+    getOneAssessmentt(id);
     setShow(true);
   };
 
@@ -162,7 +162,7 @@ const CreatePage = () => {
           ) : (
             <>
               {show ? (
-                <div className="mt-20 bg-base-200 border-zinc-200 rounded p-4 h-96 overflow-scroll">
+                <div className="mt-20 bg-base-200 rounded p-4 h-96 overflow-scroll">
                   {currentAssessmentt?.criteria.map((criterion) => {
                     const currentScore = evalFormData.criteriaAndScore.find(
                       (item) => item.criteriaName === criterion.criteria
@@ -210,7 +210,7 @@ const CreatePage = () => {
                                 <span className="font-medium">
                                   {scale.score}
                                 </span>
-                                <span className="ml-2 text-white">
+                                <span className="ml-2">
                                   - {scale.description}
                                 </span>
                               </label>

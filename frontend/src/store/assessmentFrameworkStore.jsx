@@ -45,7 +45,7 @@ export const assessmentFrameworkStore = create((set, get) => ({
   deleteAssessment: async (id) => {
     set({ loading: true });
     try {
-      console.log(`Deleting assessment with ID: ${id}`); // Debugging
+      console.log(`Deleting assessment with ID: ${id}`);
       await axiosInstance.delete(`/assessment-framework/${id}`);
       set((state) => ({
         assessments: state.assessments.filter(
@@ -69,7 +69,7 @@ export const assessmentFrameworkStore = create((set, get) => ({
       console.log("Fetched assessment:", res.data.assessmentFramework);
       set({
         currentAssessment: res.data.assessmentFramework,
-        formData: res.data.assessmentFramework, // pre-fill form with current product data
+        formData: res.data.assessmentFramework,
       });
     } catch (error) {
       console.log("Error in getting assessment", error);
@@ -86,7 +86,12 @@ export const assessmentFrameworkStore = create((set, get) => ({
         `/assessment-framework/${id}`,
         formData
       );
-      set({ currentProduct: res.data.updatedFramework });
+      set({ currentAssessment: res.data.updatedFramework });
+      set((state) => ({
+        assessments: state.assessments.map((assess) =>
+          assess._id === id ? res.data.updatedFramework : assess
+        ),
+      }));
       document.getElementById("my_modal_3").close();
       toast.success("Rubric updated successfully");
     } catch (error) {

@@ -2,10 +2,10 @@ import AssessmentFramework from "../models/assessmentFrameworkModel.js";
 
 export const createAssessmentFramework = async (req, res) => {
   try {
-    const { title, scoringScale, criteria } = req.body;
+    const { title, scoringScale, criteria, total } = req.body;
     const createdBy = req.userId;
 
-    if (!title || !scoringScale || !criteria)
+    if (!title || !scoringScale || !criteria || !total)
       return res
         .status(400)
         .json({ success: false, message: "Please fill all fields" });
@@ -23,6 +23,7 @@ export const createAssessmentFramework = async (req, res) => {
       scoringScale,
       criteria,
       createdBy,
+      total,
     });
     await assessmentFramework.save();
 
